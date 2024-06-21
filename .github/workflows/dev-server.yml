@@ -1,10 +1,9 @@
-name: Dev Server
+name: Prod Server
 
 on:
   push:
     branches:
       - master   # Trigger on pushes to the main branch
-      - dev    # Also trigger on pushes to the dev branch
     tags:
       - v*
   pull_request:
