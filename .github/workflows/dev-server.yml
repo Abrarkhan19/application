@@ -3,18 +3,19 @@ name: Dev Server
 on:
   push:
     branches:
-      - master
+      - master   # Trigger on pushes to the main branch
+      - dev    # Also trigger on pushes to the dev branch
     tags:
       - v*
   pull_request:
 
 env:
-  IMAGE_NAME: dev-server
+  IMAGE_NAME: prod-server  # Manually set IMAGE_NAME to 'prod-server'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
     permissions:
       contents: read
       packages: write
@@ -23,13 +24,10 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v2
-
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
-
       - name: Log into registry
         run: echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
       - name: Push image
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
