@@ -3,13 +3,13 @@ name: Prod Server
 on:
   push:
     branches:
-      - master   # Trigger on pushes to the main branch
+      - master
     tags:
       - v*
   pull_request:
 
 env:
-  IMAGE_NAME: prod-server  # Manually set IMAGE_NAME to 'prod-server'
+  IMAGE_NAME: prod-server
 
 jobs:
   build:
